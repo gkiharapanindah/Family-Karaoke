@@ -3,229 +3,275 @@
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
-<title>Family Karaoke Song Preview</title>
+<title>Pendaftaran Family Karaoke</title>
+<meta name="description" content="Form pendaftaran Lomba Family Karaoke GKI Harapan Indah">
 <link rel="preconnect" href="https://fonts.googleapis.com">
-<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-<link href="https://fonts.googleapis.com/css2?family=Bricolage+Grotesque:opsz,wght@12..96,600;12..96,800&family=Figtree:wght@400;500;600&display=swap" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css2?family=Fredoka:wght@500;600&family=Nunito:wght@400;600;700&display=swap" rel="stylesheet">
 <style>
-:root{
-  --bg:#F3F5FB; --card:#FFFFFF; --ink:#16204A; --muted:#5B6488; --line:#D7DDEE;
-  --active:#E1E8FF; --accent:#F0A81C; --accent-ink:#3A2600; --stage:#0E1330; --focus:#2F54EB;
-  --display:"Bricolage Grotesque","Trebuchet MS",system-ui,sans-serif;
-  --body:"Figtree",system-ui,-apple-system,"Segoe UI",Roboto,sans-serif;
-  --header-h:64px;
-  --tw:calc((100vh - var(--header-h) - 290px) * 16 / 9);
-}
-body.theater{
-  --bg:#0B0F26; --card:#141A3D; --ink:#EEF1FF; --muted:#A3ACD4; --line:#2A3266; --active:#222B63; --focus:#8FA6FF;
-}
-*{box-sizing:border-box}
-[hidden]{display:none!important}
-html{scroll-padding-top:calc(var(--header-h) + 12px)}
-body{margin:0;background:var(--bg);color:var(--ink);font:400 16px/1.5 var(--body);transition:background .25s,color .25s}
-button{font:inherit;color:inherit;cursor:pointer}
-:focus-visible{outline:3px solid var(--focus);outline-offset:2px}
-
-.topbar{position:sticky;top:0;z-index:20;height:var(--header-h);display:flex;align-items:center;justify-content:space-between;gap:16px;padding:0 max(16px,calc((100vw - 1320px)/2 + 24px));background:var(--bg);border-bottom:1px solid var(--line)}
-.topbar h1{margin:0;font:800 1.25rem/1.1 var(--display);letter-spacing:-.01em}
-.topbar-actions{display:flex;gap:10px;align-items:center}
-.btn{display:inline-flex;align-items:center;gap:8px;min-height:40px;padding:0 16px;border:1px solid var(--line);border-radius:10px;background:var(--card);font-weight:600;text-decoration:none;color:var(--ink);white-space:nowrap}
-.btn:hover{border-color:var(--muted)}
-.btn.primary{background:var(--accent);border-color:var(--accent);color:var(--accent-ink)}
-.btn.primary:hover{filter:brightness(.96)}
-.btn[disabled]{opacity:.45;cursor:not-allowed}
-.btn[aria-pressed="true"]{background:var(--active);border-color:var(--focus)}
-.count{display:inline-grid;place-items:center;min-width:2.6em;padding:0 8px;height:24px;border-radius:12px;background:var(--ink);color:var(--bg);font-size:.8rem;font-weight:600}
-
-.layout{max-width:1368px;margin:0 auto;padding:24px;display:grid;grid-template-columns:minmax(0,1fr) minmax(360px,480px);gap:32px;align-items:start}
-.list{grid-column:1;grid-row:1;min-width:0}
-.stage{grid-column:2;grid-row:1;position:sticky;top:calc(var(--header-h) + 24px);background:var(--card);border:1px solid var(--line);border-radius:16px;padding:16px}
-body.theater .layout{grid-template-columns:minmax(0,1fr)}
-body.theater .stage{grid-column:1;grid-row:1;top:var(--header-h);z-index:10;margin:-24px -24px 0;border:0;border-radius:0;background:var(--stage);color:#EEF1FF;padding:20px 24px 16px;clip-path:inset(0 -100vmax);box-shadow:0 0 0 100vmax var(--stage)}
-body.theater .list{grid-row:2;padding-top:24px}
-
-.frame{position:relative;aspect-ratio:16/9;width:100%;margin:0 auto;border-radius:12px;overflow:hidden;background:#000}
-body.theater .frame,body.theater .now,body.theater .controls{width:min(100%,var(--tw));max-width:1200px;margin-inline:auto}
-body.theater .frame{border-radius:8px}
-.frame iframe{position:absolute;inset:0;width:100%;height:100%;border:0}
-.frame .empty{position:absolute;inset:0;display:grid;place-content:center;gap:6px;text-align:center;padding:24px;color:#C9D0F5;background:radial-gradient(circle at 50% 40%,#1C2352,#0E1330)}
-.frame .empty strong{font:800 1.3rem/1.2 var(--display);color:#fff}
-.now{margin:14px 0 0;width:100%}
-.now h2{margin:0;font:800 1.2rem/1.25 var(--display);letter-spacing:-.01em}
-.now p{margin:4px 0 0;color:var(--muted);font-size:.93rem}
-body.theater .stage .now p{color:#A3ACD4}
-.controls{display:flex;flex-wrap:wrap;gap:8px;margin-top:12px}
-body.theater .stage .btn{background:#1B2350;border-color:#333D7A;color:#EEF1FF}
-body.theater .stage .btn.primary{background:var(--accent);border-color:var(--accent);color:var(--accent-ink)}
-body.theater .stage .btn[aria-pressed="true"]{background:#2E3A85;border-color:#8FA6FF;color:#EEF1FF}
-.warn{margin:12px 0 0;padding:10px 12px;border-left:4px solid var(--accent);background:rgba(240,168,28,.14);border-radius:0 8px 8px 0;font-size:.9rem}
-
-.tools{display:flex;flex-wrap:wrap;gap:12px;align-items:center;margin-bottom:8px}
-.search{flex:1 1 240px;min-height:44px;padding:0 14px;border:1px solid var(--line);border-radius:10px;background:var(--card);color:var(--ink);font:inherit}
-.chips{display:flex;flex-wrap:wrap;gap:8px;margin:0 0 8px}
-.chip{min-height:36px;padding:0 14px;border:1px solid var(--line);border-radius:18px;background:var(--card);font-size:.9rem;font-weight:500}
-.chip[aria-pressed="true"]{background:var(--ink);border-color:var(--ink);color:var(--bg)}
-
-.group h3{margin:20px 0 8px;padding:8px 0;background:var(--bg);font:800 1.05rem/1.2 var(--display);display:flex;justify-content:space-between;gap:12px;border-bottom:1px solid var(--line)}
-.group h3 span{font:500 .85rem var(--body);color:var(--muted)}
-.songs{list-style:none;margin:0;padding:0;display:grid;gap:6px}
-.song{display:grid;grid-template-columns:minmax(0,1fr);align-items:stretch;border:1px solid var(--line);border-radius:12px;background:var(--card);overflow:hidden}
-.song.playing{border-color:var(--focus);background:var(--active)}
-.play{display:grid;grid-template-columns:36px minmax(0,1fr);gap:12px;align-items:center;padding:10px 12px;border:0;background:none;text-align:left}
-.play:hover .disc{background:var(--ink);color:var(--bg)}
-.disc{width:36px;height:36px;border-radius:50%;display:grid;place-items:center;background:var(--active);color:var(--ink);transition:background .15s}
-.song.playing .disc{background:var(--focus);color:#fff}
-.play b{display:block;font-weight:600;line-height:1.3}
-.play small{display:block;color:var(--muted);line-height:1.35;margin-top:2px}
-.none{padding:32px 0;color:var(--muted)}
-
-@media (max-width:960px){
-  .layout{grid-template-columns:minmax(0,1fr);padding:16px;gap:16px}
-  .stage,body.theater .stage{grid-column:1;grid-row:1;position:sticky;top:var(--header-h);z-index:10;margin:0 -16px;border-radius:0;border-left:0;border-right:0;padding:12px 16px;clip-path:none;box-shadow:none}
-  body.theater .stage{margin:-16px -16px 0}
-  .list,body.theater .list{grid-row:2}
-  .now p,.controls .hide-sm{display:none}
-  .btn .label{display:none}
-  .topbar h1{font-size:1.05rem}
-  body.theater .frame,body.theater .now,body.theater .controls{width:100%}
-}
-@media (prefers-reduced-motion:reduce){*{transition:none!important}}
+  :root {
+    --bg: #fff7ed; --card: #ffffff; --ink: #1f2937; --muted: #6b7280;
+    --accent: #c2410c; --accent-2: #f59e0b; --line: #fed7aa;
+    --ok-bg: #ecfdf5; --ok-ink: #065f46; --err-bg: #fef2f2; --err-ink: #991b1b;
+  }
+  * { box-sizing: border-box; }
+  body {
+    margin: 0; min-height: 100vh; font-family: Nunito, system-ui, sans-serif; color: var(--ink);
+    background: radial-gradient(circle at 15% 10%, #fde68a 0, transparent 35%),
+                radial-gradient(circle at 90% 85%, #fdba74 0, transparent 40%), var(--bg);
+    display: flex; align-items: flex-start; justify-content: center; padding: 32px 16px;
+  }
+  .wrap { width: 100%; max-width: 520px; }
+  header { text-align: center; margin-bottom: 20px; }
+  .mic { font-size: 44px; line-height: 1; }
+  h1 { font-family: Fredoka, sans-serif; font-weight: 600; font-size: 30px; margin: 8px 0 4px; color: var(--accent); }
+  header p { margin: 0; color: var(--muted); }
+  .quota { display: inline-block; margin-top: 12px; padding: 6px 12px; border-radius: 999px;
+           background: #fff; border: 1px solid var(--line); font-size: 14px; font-weight: 700; }
+  .card { background: var(--card); border-radius: 18px; padding: 24px; box-shadow: 0 10px 30px rgba(194,65,12,.12); }
+  label { display: block; font-weight: 700; margin: 0 0 6px; }
+  .hint { font-weight: 400; color: var(--muted); font-size: 13px; }
+  .field { margin-bottom: 18px; }
+  input { width: 100%; padding: 12px 14px; border: 1.5px solid #e5e7eb; border-radius: 10px;
+          font: inherit; font-size: 16px; background: #fff; color: var(--ink); }
+  input:focus { outline: none; border-color: var(--accent-2); box-shadow: 0 0 0 3px rgba(245,158,11,.25); }
+  .stepper { display: flex; gap: 8px; }
+  .stepper button { flex: 1; padding: 12px 0; border-radius: 10px; border: 1.5px solid #e5e7eb;
+                    background: #fff; font: inherit; font-weight: 700; font-size: 16px; cursor: pointer; color: var(--ink); }
+  .stepper button[aria-pressed="true"] { background: var(--accent); border-color: var(--accent); color: #fff; }
+  .submit { width: 100%; padding: 14px; border: 0; border-radius: 12px; cursor: pointer;
+            background: linear-gradient(90deg, var(--accent), var(--accent-2)); color: #fff;
+            font-family: Fredoka, sans-serif; font-size: 18px; font-weight: 600; }
+  .submit:disabled { opacity: .6; cursor: wait; }
+  .msg { padding: 12px 14px; border-radius: 10px; margin-bottom: 16px; font-size: 14px; }
+  .msg.err { background: var(--err-bg); color: var(--err-ink); }
+  .hp { position: absolute; left: -9999px; }
+  .result { text-align: center; }
+  .result .big { font-family: Fredoka, sans-serif; font-size: 64px; color: var(--accent); line-height: 1; margin: 8px 0; }
+  .result dl { text-align: left; display: grid; grid-template-columns: auto 1fr; gap: 6px 12px;
+               background: var(--bg); border-radius: 12px; padding: 14px; margin: 18px 0; font-size: 14px; }
+  .result dt { color: var(--muted); } .result dd { margin: 0; font-weight: 700; word-break: break-word; }
+  .btn-link { display: inline-block; padding: 12px 18px; border-radius: 12px; background: var(--accent);
+              color: #fff; text-decoration: none; font-weight: 700; }
+  .note { font-size: 13px; color: var(--muted); margin-top: 14px; }
+  footer { text-align: center; color: var(--muted); font-size: 13px; margin-top: 18px; }
+  .event { display: grid; gap: 8px; margin-bottom: 18px; }
+  .event div { display: flex; gap: 10px; align-items: baseline; background: var(--bg);
+               border-radius: 10px; padding: 10px 12px; font-size: 15px; }
+  .event span:first-child { width: 22px; flex: none; text-align: center; }
+  details.rules { border: 1.5px solid var(--line); border-radius: 12px; margin-bottom: 22px; }
+  details.rules summary { cursor: pointer; padding: 12px 14px; font-weight: 700; color: var(--accent); }
+  details.rules p { margin: 0 14px 8px; font-size: 14px; color: var(--muted); }
+  details.rules ol { margin: 0; padding: 0 16px 14px 34px; font-size: 14px; line-height: 1.55; }
+  details.rules li { margin-bottom: 6px; }
+  .agree { display: flex; gap: 10px; align-items: flex-start; font-weight: 400; font-size: 14px;
+           background: var(--bg); padding: 12px; border-radius: 10px; cursor: pointer; }
+  .agree input { width: 20px; height: 20px; flex: none; margin: 1px 0 0; accent-color: var(--accent); }
+  [hidden] { display: none !important; }
 </style>
 </head>
 <body>
+<div class="wrap">
+  <header>
+    <div class="mic" aria-hidden="true">🎤</div>
+    <h1>Lomba Family Karaoke</h1>
+    <p>Bulan Keluarga 2026 · GKI Harapan Indah</p>
+    <span class="quota" id="quota" hidden></span>
+  </header>
 
-<header class="topbar">
-  <h1>Family Karaoke Song Preview</h1>
-</header>
+  <div class="card">
+    <section id="info">
+      <div class="event">
+        <div><span aria-hidden="true">📅</span><span><b>Minggu, 25 Oktober 2026</b></span></div>
+        <div><span aria-hidden="true">🕐</span><span>Mulai pukul <b>13.00 WIB</b></span></div>
+        <div><span aria-hidden="true">📍</span><span>Ruang Serbaguna GKI Harapan Indah</span></div>
+        <div><span aria-hidden="true">⏳</span><span>Pendaftaran ditutup <b>Rabu, 21 Oktober 2026</b></span></div>
+      </div>
 
-<main class="layout">
-  <section class="stage" aria-label="Video player">
-    <div class="frame" id="frame">
-      <div class="empty"><strong>Pick a song to play</strong><span>Press a song title in the list. The video plays here.</span></div>
-    </div>
-    <div class="now" id="now" hidden>
-      <h2 id="nowTitle"></h2>
-      <p id="nowMeta"></p>
-    </div>
-    <div class="controls" id="controls" hidden>
-      <button class="btn" id="btnPrev" type="button">Previous</button>
-      <button class="btn" id="btnNext" type="button">Next</button>
-      <button class="btn" id="btnTheater" type="button" aria-pressed="false" title="Toggle theater mode (T)">Theater mode</button>
-      <a class="btn hide-sm" id="btnYt" href="#" target="_blank" rel="noopener">Open on YouTube</a>
-    </div>
-    <div class="controls" id="controlsEmpty">
-      <button class="btn" id="btnTheater0" type="button" aria-pressed="false" title="Toggle theater mode (T)">Theater mode</button>
-    </div>
-  </section>
+      <details class="rules" open>
+        <summary>Ketentuan Family Karaoke – Bulan Keluarga 2026</summary>
+        <p>Mohon memperhatikan ketentuan berikut sebelum melakukan pendaftaran:</p>
+        <ol>
+          <li>Peserta merupakan kelompok keluarga, terdiri dari 2–4 orang dalam satu penampilan.</li>
+          <li>Anggota kelompok merupakan kombinasi keluarga orang tua–anak dan/atau opa/oma–cucu.</li>
+          <li>Setiap keluarga hanya dapat mendaftarkan 1 kelompok dan membawakan 1 lagu.</li>
+          <li>Kuota lomba dibatasi maksimal 20 keluarga. Pendaftaran dapat ditutup lebih awal apabila kuota telah terpenuhi.</li>
+          <li>Pendaftaran ditutup Rabu, 21 Oktober 2026.</li>
+          <li>Lagu dan backing track karaoke disiapkan oleh panitia. Peserta tidak perlu membawa file musik sendiri.</li>
+          <li>Setiap keluarga akan mendapatkan 5 pilihan lagu yang telah ditentukan panitia untuk dipersiapkan. Pada hari perlombaan, 1 dari 5 lagu tersebut akan diundi untuk dibawakan.</li>
+          <li>Peserta dimohon hadir sesuai waktu registrasi/check-in yang akan diinformasikan oleh panitia.</li>
+          <li>Peserta dimohon membawa tumbler pribadi. Air minum akan disediakan melalui dispenser/galon di lokasi.</li>
+          <li>Dengan melakukan pendaftaran, peserta dianggap telah memahami dan menyetujui ketentuan perlombaan serta mengikuti arahan panitia selama kegiatan berlangsung.</li>
+        </ol>
+      </details>
+    </section>
 
-  <section class="list" aria-label="Song list">
-    <div class="tools">
-      <input class="search" id="search" type="search" placeholder="Search by song title" aria-label="Search songs">
-    </div>
-    <div class="chips" id="chips" role="group" aria-label="Filter by group"></div>
-    <div id="groups"></div>
-  </section>
-</main>
+    <form id="form" novalidate>
+      <div class="msg err" id="error" role="alert" hidden></div>
 
+      <div class="field">
+        <label for="namaKeluarga">Nama Keluarga</label>
+        <input id="namaKeluarga" name="namaKeluarga" required minlength="2" maxlength="80"
+               placeholder="contoh: Keluarga Santoso" autocomplete="family-name">
+      </div>
+
+      <div class="field">
+        <label>Jumlah Peserta Lomba <span class="hint">(2–4 orang dalam satu penampilan)</span></label>
+        <div class="stepper" id="stepper" role="group" aria-label="Jumlah peserta"></div>
+      </div>
+
+      <div class="field">
+        <label for="email">Alamat Email <span class="hint">— detail pendaftaran dikirim ke sini</span></label>
+        <input id="email" name="email" type="email" required maxlength="120"
+               placeholder="nama@email.com" autocomplete="email">
+      </div>
+
+      <div class="field">
+        <label for="whatsapp">No WhatsApp</label>
+        <input id="whatsapp" name="whatsapp" type="tel" required inputmode="tel"
+               placeholder="0812xxxxxxxx" autocomplete="tel">
+      </div>
+
+      <div class="field">
+        <label class="agree" for="setuju">
+          <input type="checkbox" id="setuju" name="setuju" required>
+          <span>Saya telah membaca dan menyetujui <b>Ketentuan Family Karaoke</b> di atas, serta bersedia mengikuti arahan panitia selama kegiatan berlangsung.</span>
+        </label>
+      </div>
+
+      <input class="hp" type="text" name="website" tabindex="-1" autocomplete="off" aria-hidden="true">
+
+      <button class="submit" id="submit" type="submit">Daftar Sekarang</button>
+    </form>
+
+    <div class="result" id="result" hidden>
+      <div>Keluarga <b id="r-nama"></b> mendapat</div>
+      <div class="big">Kelompok <span id="r-kelompok"></span></div>
+      <a class="btn-link" id="r-link" href="#" target="_blank" rel="noopener">🎵 Buka Daftar Lagu</a>
+      <dl>
+        <dt>ID Pendaftaran</dt><dd id="r-id"></dd>
+        <dt>Jumlah Peserta</dt><dd id="r-jumlah"></dd>
+        <dt>Link Lagu</dt><dd id="r-url"></dd>
+      </dl>
+      <p class="note" id="r-email-note"></p>
+    </div>
+
+    <div id="closed" hidden style="text-align:center">
+      <p style="font-size:18px;font-weight:700" id="closed-msg">Mohon maaf, kuota pendaftaran sudah penuh.</p>
+      <p class="note">Silakan hubungi panitia untuk informasi lebih lanjut.</p>
+    </div>
+  </div>
+
+  <footer>Panitia Family Karaoke · GKI Harapan Indah</footer>
+</div>
 
 <script>
-const SONGS = [{"cat": "Kelompok 1", "title": "KJ 318 Berbahagia Tiap Rumah Tangga", "note": "", "vid": "EWav5xs7A3M", "url": "https://www.youtube.com/watch?v=EWav5xs7A3M"}, {"cat": "Kelompok 1", "title": "Tak Ku Tahu Kan Hari Esok", "note": "", "vid": "0Lz5cASZ0C0", "url": "https://www.youtube.com/watch?v=0Lz5cASZ0C0"}, {"cat": "Kelompok 1", "title": "Waktu Tuhan", "note": "", "vid": "eHK_cheOI0s", "url": "https://www.youtube.com/watch?v=eHK_cheOI0s"}, {"cat": "Kelompok 1", "title": "Keluargaku adalah surgaku", "note": "", "vid": "z80nEjn8dXg", "url": "https://www.youtube.com/watch?v=z80nEjn8dXg"}, {"cat": "Kelompok 1", "title": "Elshaddai", "note": "", "vid": "lAW4rqfttZM", "url": "https://www.youtube.com/watch?v=lAW4rqfttZM"}, {"cat": "Kelompok 2", "title": "PKJ 288 Inilah Rumah Kami", "note": "", "vid": "xZtbj7DY3uM", "url": "https://www.youtube.com/watch?v=xZtbj7DY3uM"}, {"cat": "Kelompok 2", "title": "S'bab Kau Besar", "note": "", "vid": "-MBgVYaC_DQ", "url": "https://www.youtube.com/watch?v=-MBgVYaC_DQ"}, {"cat": "Kelompok 2", "title": "Indah Rencanamu Tuhan", "note": "", "vid": "0RcxDchoyi8", "url": "https://www.youtube.com/watch?v=0RcxDchoyi8"}, {"cat": "Kelompok 2", "title": "Mujizat Itu Nyata", "note": "", "vid": "f5rO96r9aHE", "url": "https://www.youtube.com/watch?v=f5rO96r9aHE"}, {"cat": "Kelompok 2", "title": "Bersama-Mu", "note": "", "vid": "4fSBa62gB3c", "url": "https://www.youtube.com/watch?v=4fSBa62gB3c"}, {"cat": "Kelompok 3", "title": "PKJ 289 Keluarga Hidup Indah", "note": "", "vid": "PmXhcO7trCU", "url": "https://www.youtube.com/watch?v=PmXhcO7trCU"}, {"cat": "Kelompok 3", "title": "Bagi Tuhan Tak Ada Yang Mustahil", "note": "", "vid": "slPzE6IhE4Y", "url": "https://www.youtube.com/watch?v=slPzE6IhE4Y"}, {"cat": "Kelompok 3", "title": "Keluarga Allah", "note": "", "vid": "jS-pgNj5aqc", "url": "https://www.youtube.com/watch?v=jS-pgNj5aqc"}, {"cat": "Kelompok 3", "title": "Ku Hidup Bagi-Mu", "note": "", "vid": "-A705o1DFJc", "url": "https://www.youtube.com/watch?v=-A705o1DFJc"}, {"cat": "Kelompok 3", "title": "Aku dan Seisi Rumahku", "note": "", "vid": "9zMx31FKoNw", "url": "https://www.youtube.com/watch?v=9zMx31FKoNw"}, {"cat": "Kelompok 4", "title": "KJ 451 Bila Yesus Bersama Keluarga", "note": "", "vid": "HiUVYsqtX5I", "url": "https://www.youtube.com/watch?v=HiUVYsqtX5I"}, {"cat": "Kelompok 4", "title": "Janji-Mu Seperti Fajar", "note": "", "vid": "V1cPYKBVth8", "url": "https://www.youtube.com/watch?v=V1cPYKBVth8"}, {"cat": "Kelompok 4", "title": "Hidup ini adalah kesempatan", "note": "", "vid": "ZgNQS_ebdgg", "url": "https://www.youtube.com/watch?v=ZgNQS_ebdgg"}, {"cat": "Kelompok 4", "title": "Kalau Ku Cari Damai", "note": "", "vid": "m8OYlO1bhQI", "url": "https://www.youtube.com/watch?v=m8OYlO1bhQI"}, {"cat": "Kelompok 4", "title": "Berkat Bagi Keluargaku", "note": "", "vid": "q69FdKG7ec0", "url": "https://www.youtube.com/watch?v=q69FdKG7ec0"}];
-const $ = s => document.querySelector(s);
-const state = { current: -1, category: "All", query: "" };
+  // ===== GANTI dengan URL Web App dari Google Apps Script (akhiran /exec) =====
+  const SCRIPT_URL = 'https://script.google.com/macros/s/AKfycbwFRQgY_twLW69RTC14lGBnEY5LlXPyNdhRrYN7XxRMXeLCQTddR85cjx1_zd2LX9r7iw/exec';
 
-const ICON = {
-  play: '<svg width="16" height="16" viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><path d="M8 5v14l11-7z"/></svg>'
-};
-const esc = s => String(s).replace(/[&<>"']/g, c => ({"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;","'":"&#39;"}[c]));
+  const MIN = 2, MAX = 4;
+  const BATAS_DAFTAR = new Date('2026-10-21T23:59:59+07:00');
+  let jumlahPeserta = null;
 
-const categories = [...new Set(SONGS.map(s => s.cat))];
-function visible(){
-  const q = state.query.trim().toLowerCase();
-  return SONGS.map((s, i) => ({ ...s, i })).filter(s =>
-    (state.category === "All" || s.cat === state.category) &&
-    (!q || (s.title + " " + s.cat).toLowerCase().includes(q)));
-}
+  const $ = id => document.getElementById(id);
+  const form = $('form'), errBox = $('error'), btn = $('submit');
 
-function renderChips(){
-  if (categories.length < 2){ $("#chips").hidden = true; return; }
-  const items = [["All", "All songs"], ...categories.map(c => [c, c])];
-  $("#chips").innerHTML = items.map(([k, label]) => {
-    const pressed = state.category === k;
-    return `<button class="chip" type="button" data-k="${esc(k)}" aria-pressed="${pressed}">${esc(label)}</button>`;
-  }).join("");
-}
+  function tutupForm(pesan) {
+    if (!$('result').hidden) return;
+    form.hidden = true;
+    $('closed-msg').textContent = pesan;
+    $('closed').hidden = false;
+  }
 
-function renderList(){
-  const rows = visible();
-  const groups = {};
-  rows.forEach(r => (groups[r.cat] ||= []).push(r));
-  const html = Object.keys(groups).map(cat => `
-    <div class="group">
-      <h3>${esc(cat)}<span>${groups[cat].length} songs</span></h3>
-      <ul class="songs">
-        ${groups[cat].map(r => `
-          <li class="song${r.i === state.current ? " playing" : ""}" data-i="${r.i}">
-            <button class="play" type="button" data-play="${r.i}">
-              <span class="disc">${ICON.play}</span>
-              <span><b>${esc(r.title)}</b></span>
-            </button>
-          </li>`).join("")}
-      </ul>
-    </div>`).join("");
-  $("#groups").innerHTML = html || '<p class="none">No songs match. Clear the search to see all songs.</p>';
-}
+  if (new Date() > BATAS_DAFTAR) {
+    tutupForm('Mohon maaf, pendaftaran sudah ditutup pada Rabu, 21 Oktober 2026.');
+  }
 
-function play(i){
-  const s = SONGS[i];
-  state.current = i;
-  const origin = location.protocol.startsWith("http") ? "&origin=" + encodeURIComponent(location.origin) : "";
-  $("#frame").innerHTML = `<iframe src="https://www.youtube.com/embed/${s.vid}?autoplay=1&rel=0&playsinline=1${origin}"
-    title="${esc(s.title)}" allow="autoplay; encrypted-media; picture-in-picture; fullscreen"
-    allowfullscreen referrerpolicy="strict-origin-when-cross-origin"></iframe>`;
-  $("#nowTitle").textContent = s.title;
-  $("#nowMeta").textContent = s.cat;
-  $("#now").hidden = false; $("#controls").hidden = false; $("#controlsEmpty").hidden = true;
-  $("#btnYt").href = s.url;
-  document.querySelectorAll(".song").forEach(li => li.classList.toggle("playing", +li.dataset.i === i));
-  if (window.matchMedia("(max-width:960px)").matches) window.scrollTo({ top: 0, behavior: "smooth" });
-}
+  // Tombol pilihan jumlah peserta 2–6
+  for (let n = MIN; n <= MAX; n++) {
+    const b = document.createElement('button');
+    b.type = 'button'; b.textContent = n; b.setAttribute('aria-pressed', 'false');
+    b.addEventListener('click', () => {
+      jumlahPeserta = n;
+      $('stepper').querySelectorAll('button').forEach(x =>
+        x.setAttribute('aria-pressed', String(x === b)));
+    });
+    $('stepper').appendChild(b);
+  }
 
-function step(dir){
-  const list = visible().map(r => r.i);
-  if (!list.length) return;
-  const at = list.indexOf(state.current);
-  const next = at < 0 ? (dir > 0 ? 0 : list.length - 1) : (at + dir + list.length) % list.length;
-  play(list[next]);
-  document.querySelector(`.song[data-i="${list[next]}"]`)?.scrollIntoView({ block: "nearest", behavior: "smooth" });
-}
+  function showError(msg) {
+    errBox.textContent = msg; errBox.hidden = false;
+    errBox.scrollIntoView({ behavior: 'smooth', block: 'center' });
+  }
 
-function setTheater(on){
-  document.body.classList.toggle("theater", on);
-  ["#btnTheater", "#btnTheater0"].forEach(id => {
-    const b = $(id); b.setAttribute("aria-pressed", on); b.textContent = on ? "Exit theater mode" : "Theater mode";
+  function validWA(v) {
+    const plus = v.trim().startsWith('+');
+    let d = v.replace(/\D/g, '');
+    if (!plus && d.startsWith('0')) d = '62' + d.slice(1);
+    return d.length >= 10 && d.length <= 15;
+  }
+
+  function showStatus(s) {
+    if (!s) return;
+    const q = $('quota');
+    q.textContent = s.ditutup ? 'Pendaftaran ditutup'
+      : s.penuh ? 'Kuota penuh' : `Sisa kuota: ${s.sisa} dari ${s.maksimum} keluarga`;
+    q.hidden = false;
+    if (s.ditutup) tutupForm('Mohon maaf, pendaftaran sudah ditutup pada Rabu, 21 Oktober 2026.');
+    else if (s.penuh) tutupForm('Mohon maaf, kuota 20 keluarga sudah terpenuhi.');
+  }
+
+  // Cek sisa kuota saat halaman dibuka
+  fetch(SCRIPT_URL).then(r => r.json()).then(j => j.ok && showStatus(j.status)).catch(() => {});
+
+  form.addEventListener('submit', async (e) => {
+    e.preventDefault();
+    errBox.hidden = true;
+
+    const payload = {
+      namaKeluarga: $('namaKeluarga').value.trim(),
+      jumlahPeserta,
+      email: $('email').value.trim(),
+      whatsapp: $('whatsapp').value.trim(),
+      setuju: $('setuju').checked,
+      website: form.website.value
+    };
+
+    if (payload.namaKeluarga.length < 2) return showError('Nama Keluarga wajib diisi.');
+    if (!jumlahPeserta) return showError('Pilih jumlah peserta (2–4 orang).');
+    if (!$('email').checkValidity() || !payload.email) return showError('Alamat email tidak valid.');
+    if (!validWA(payload.whatsapp)) return showError('Nomor WhatsApp tidak valid. Contoh: 0812xxxxxxxx.');
+    if (!payload.setuju) return showError('Mohon centang persetujuan ketentuan perlombaan.');
+
+    btn.disabled = true; btn.textContent = 'Mengirim…';
+    try {
+      // text/plain agar tidak memicu CORS preflight ke Apps Script
+      const res = await fetch(SCRIPT_URL, {
+        method: 'POST',
+        headers: { 'Content-Type': 'text/plain;charset=utf-8' },
+        body: JSON.stringify(payload)
+      });
+      const j = await res.json();
+      if (!j.ok) throw new Error(j.error || 'Pendaftaran gagal.');
+
+      const d = j.data;
+      $('r-nama').textContent = d.namaKeluarga;
+      $('r-kelompok').textContent = d.kelompok;
+      $('r-id').textContent = d.id;
+      $('r-jumlah').textContent = d.jumlahPeserta + ' orang';
+      $('r-url').textContent = d.link;
+      $('r-link').href = d.link;
+      $('r-email-note').textContent = d.emailTerkirim
+        ? `Detail pendaftaran sudah dikirim ke ${payload.email}. Cek juga folder Spam/Promosi.`
+        : 'Pendaftaran tersimpan, tetapi email gagal terkirim. Simpan halaman ini atau hubungi panitia.';
+      form.hidden = true; $('result').hidden = false;
+      window.scrollTo({ top: 0, behavior: 'smooth' });
+    } catch (err) {
+      showError(err.message === 'Failed to fetch'
+        ? 'Tidak dapat terhubung ke server. Periksa koneksi internet lalu coba lagi.'
+        : err.message);
+      btn.disabled = false; btn.textContent = 'Daftar Sekarang';
+    }
   });
-  $("#frame").scrollIntoView({ block: "nearest" });
-}
-
-$("#groups").addEventListener("click", e => {
-  const p = e.target.closest("[data-play]"); if (p) play(+p.dataset.play);
-});
-$("#chips").addEventListener("click", e => {
-  const c = e.target.closest("[data-k]"); if (!c) return;
-  state.category = c.dataset.k;
-  renderChips(); renderList();
-});
-$("#search").addEventListener("input", e => { state.query = e.target.value; renderList(); });
-$("#btnPrev").onclick = () => step(-1);
-$("#btnNext").onclick = () => step(1);
-$("#btnTheater").onclick = $("#btnTheater0").onclick = () => setTheater(!document.body.classList.contains("theater"));
-document.addEventListener("keydown", e => {
-  if (e.target.matches("input, textarea") || e.ctrlKey || e.metaKey || e.altKey) return;
-  if (e.key === "t" || e.key === "T") setTheater(!document.body.classList.contains("theater"));
-  if (e.key === "Escape" && document.body.classList.contains("theater")) setTheater(false);
-});
-
-renderChips(); renderList();
 </script>
 </body>
 </html>
