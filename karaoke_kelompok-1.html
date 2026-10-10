@@ -1,0 +1,231 @@
+<!doctype html>
+<html lang="id">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Family Karaoke Kelompok 1</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Bricolage+Grotesque:opsz,wght@12..96,600;12..96,800&family=Figtree:wght@400;500;600&display=swap" rel="stylesheet">
+<style>
+:root{
+  --bg:#F3F5FB; --card:#FFFFFF; --ink:#16204A; --muted:#5B6488; --line:#D7DDEE;
+  --active:#E1E8FF; --accent:#F0A81C; --accent-ink:#3A2600; --stage:#0E1330; --focus:#2F54EB;
+  --display:"Bricolage Grotesque","Trebuchet MS",system-ui,sans-serif;
+  --body:"Figtree",system-ui,-apple-system,"Segoe UI",Roboto,sans-serif;
+  --header-h:64px;
+  --tw:calc((100vh - var(--header-h) - 290px) * 16 / 9);
+}
+body.theater{
+  --bg:#0B0F26; --card:#141A3D; --ink:#EEF1FF; --muted:#A3ACD4; --line:#2A3266; --active:#222B63; --focus:#8FA6FF;
+}
+*{box-sizing:border-box}
+[hidden]{display:none!important}
+html{scroll-padding-top:calc(var(--header-h) + 12px)}
+body{margin:0;background:var(--bg);color:var(--ink);font:400 16px/1.5 var(--body);transition:background .25s,color .25s}
+button{font:inherit;color:inherit;cursor:pointer}
+:focus-visible{outline:3px solid var(--focus);outline-offset:2px}
+
+.topbar{position:sticky;top:0;z-index:20;height:var(--header-h);display:flex;align-items:center;justify-content:space-between;gap:16px;padding:0 max(16px,calc((100vw - 1320px)/2 + 24px));background:var(--bg);border-bottom:1px solid var(--line)}
+.topbar h1{margin:0;font:800 1.25rem/1.1 var(--display);letter-spacing:-.01em}
+.topbar-actions{display:flex;gap:10px;align-items:center}
+.btn{display:inline-flex;align-items:center;gap:8px;min-height:40px;padding:0 16px;border:1px solid var(--line);border-radius:10px;background:var(--card);font-weight:600;text-decoration:none;color:var(--ink);white-space:nowrap}
+.btn:hover{border-color:var(--muted)}
+.btn.primary{background:var(--accent);border-color:var(--accent);color:var(--accent-ink)}
+.btn.primary:hover{filter:brightness(.96)}
+.btn[disabled]{opacity:.45;cursor:not-allowed}
+.btn[aria-pressed="true"]{background:var(--active);border-color:var(--focus)}
+.count{display:inline-grid;place-items:center;min-width:2.6em;padding:0 8px;height:24px;border-radius:12px;background:var(--ink);color:var(--bg);font-size:.8rem;font-weight:600}
+
+.layout{max-width:1368px;margin:0 auto;padding:24px;display:grid;grid-template-columns:minmax(0,1fr) minmax(360px,480px);gap:32px;align-items:start}
+.list{grid-column:1;grid-row:1;min-width:0}
+.stage{grid-column:2;grid-row:1;position:sticky;top:calc(var(--header-h) + 24px);background:var(--card);border:1px solid var(--line);border-radius:16px;padding:16px}
+body.theater .layout{grid-template-columns:minmax(0,1fr)}
+body.theater .stage{grid-column:1;grid-row:1;top:var(--header-h);z-index:10;margin:-24px -24px 0;border:0;border-radius:0;background:var(--stage);color:#EEF1FF;padding:20px 24px 16px;clip-path:inset(0 -100vmax);box-shadow:0 0 0 100vmax var(--stage)}
+body.theater .list{grid-row:2;padding-top:24px}
+
+.frame{position:relative;aspect-ratio:16/9;width:100%;margin:0 auto;border-radius:12px;overflow:hidden;background:#000}
+body.theater .frame,body.theater .now,body.theater .controls{width:min(100%,var(--tw));max-width:1200px;margin-inline:auto}
+body.theater .frame{border-radius:8px}
+.frame iframe{position:absolute;inset:0;width:100%;height:100%;border:0}
+.frame .empty{position:absolute;inset:0;display:grid;place-content:center;gap:6px;text-align:center;padding:24px;color:#C9D0F5;background:radial-gradient(circle at 50% 40%,#1C2352,#0E1330)}
+.frame .empty strong{font:800 1.3rem/1.2 var(--display);color:#fff}
+.now{margin:14px 0 0;width:100%}
+.now h2{margin:0;font:800 1.2rem/1.25 var(--display);letter-spacing:-.01em}
+.now p{margin:4px 0 0;color:var(--muted);font-size:.93rem}
+body.theater .stage .now p{color:#A3ACD4}
+.controls{display:flex;flex-wrap:wrap;gap:8px;margin-top:12px}
+body.theater .stage .btn{background:#1B2350;border-color:#333D7A;color:#EEF1FF}
+body.theater .stage .btn.primary{background:var(--accent);border-color:var(--accent);color:var(--accent-ink)}
+body.theater .stage .btn[aria-pressed="true"]{background:#2E3A85;border-color:#8FA6FF;color:#EEF1FF}
+.warn{margin:12px 0 0;padding:10px 12px;border-left:4px solid var(--accent);background:rgba(240,168,28,.14);border-radius:0 8px 8px 0;font-size:.9rem}
+
+.tools{display:flex;flex-wrap:wrap;gap:12px;align-items:center;margin-bottom:8px}
+.search{flex:1 1 240px;min-height:44px;padding:0 14px;border:1px solid var(--line);border-radius:10px;background:var(--card);color:var(--ink);font:inherit}
+.chips{display:flex;flex-wrap:wrap;gap:8px;margin:0 0 8px}
+.chip{min-height:36px;padding:0 14px;border:1px solid var(--line);border-radius:18px;background:var(--card);font-size:.9rem;font-weight:500}
+.chip[aria-pressed="true"]{background:var(--ink);border-color:var(--ink);color:var(--bg)}
+
+.group h3{margin:20px 0 8px;padding:8px 0;background:var(--bg);font:800 1.05rem/1.2 var(--display);display:flex;justify-content:space-between;gap:12px;border-bottom:1px solid var(--line)}
+.group h3 span{font:500 .85rem var(--body);color:var(--muted)}
+.songs{list-style:none;margin:0;padding:0;display:grid;gap:6px}
+.song{display:grid;grid-template-columns:minmax(0,1fr);align-items:stretch;border:1px solid var(--line);border-radius:12px;background:var(--card);overflow:hidden}
+.song.playing{border-color:var(--focus);background:var(--active)}
+.play{display:grid;grid-template-columns:36px minmax(0,1fr);gap:12px;align-items:center;padding:10px 12px;border:0;background:none;text-align:left}
+.play:hover .disc{background:var(--ink);color:var(--bg)}
+.disc{width:36px;height:36px;border-radius:50%;display:grid;place-items:center;background:var(--active);color:var(--ink);transition:background .15s}
+.song.playing .disc{background:var(--focus);color:#fff}
+.play b{display:block;font-weight:600;line-height:1.3}
+.play small{display:block;color:var(--muted);line-height:1.35;margin-top:2px}
+.none{padding:32px 0;color:var(--muted)}
+
+@media (max-width:960px){
+  .layout{grid-template-columns:minmax(0,1fr);padding:16px;gap:16px}
+  .stage,body.theater .stage{grid-column:1;grid-row:1;position:sticky;top:var(--header-h);z-index:10;margin:0 -16px;border-radius:0;border-left:0;border-right:0;padding:12px 16px;clip-path:none;box-shadow:none}
+  body.theater .stage{margin:-16px -16px 0}
+  .list,body.theater .list{grid-row:2}
+  .now p,.controls .hide-sm{display:none}
+  .btn .label{display:none}
+  .topbar h1{font-size:1.05rem}
+  body.theater .frame,body.theater .now,body.theater .controls{width:100%}
+}
+@media (prefers-reduced-motion:reduce){*{transition:none!important}}
+</style>
+</head>
+<body>
+
+<header class="topbar">
+  <h1>Family Karaoke Kelompok 1</h1>
+</header>
+
+<main class="layout">
+  <section class="stage" aria-label="Video player">
+    <div class="frame" id="frame">
+      <div class="empty"><strong>Pick a song to play</strong><span>Press a song title in the list. The video plays here.</span></div>
+    </div>
+    <div class="now" id="now" hidden>
+      <h2 id="nowTitle"></h2>
+      <p id="nowMeta"></p>
+    </div>
+    <div class="controls" id="controls" hidden>
+      <button class="btn" id="btnPrev" type="button">Previous</button>
+      <button class="btn" id="btnNext" type="button">Next</button>
+      <button class="btn" id="btnTheater" type="button" aria-pressed="false" title="Toggle theater mode (T)">Theater mode</button>
+      <a class="btn hide-sm" id="btnYt" href="#" target="_blank" rel="noopener">Open on YouTube</a>
+    </div>
+    <div class="controls" id="controlsEmpty">
+      <button class="btn" id="btnTheater0" type="button" aria-pressed="false" title="Toggle theater mode (T)">Theater mode</button>
+    </div>
+  </section>
+
+  <section class="list" aria-label="Song list">
+    <div class="tools">
+      <input class="search" id="search" type="search" placeholder="Search by song title" aria-label="Search songs">
+    </div>
+    <div class="chips" id="chips" role="group" aria-label="Filter by group"></div>
+    <div id="groups"></div>
+  </section>
+</main>
+
+
+<script>
+const SONGS = [{"cat": "Kelompok 1", "title": "KJ 318 Berbahagia Tiap Rumah Tangga", "note": "", "vid": "EWav5xs7A3M", "url": "https://www.youtube.com/watch?v=EWav5xs7A3M"}, {"cat": "Kelompok 1", "title": "Tak Ku Tahu Kan Hari Esok", "note": "", "vid": "0Lz5cASZ0C0", "url": "https://www.youtube.com/watch?v=0Lz5cASZ0C0"}, {"cat": "Kelompok 1", "title": "Waktu Tuhan", "note": "", "vid": "eHK_cheOI0s", "url": "https://www.youtube.com/watch?v=eHK_cheOI0s"}, {"cat": "Kelompok 1", "title": "Keluargaku adalah surgaku", "note": "", "vid": "z80nEjn8dXg", "url": "https://www.youtube.com/watch?v=z80nEjn8dXg"}, {"cat": "Kelompok 1", "title": "Elshaddai", "note": "", "vid": "lAW4rqfttZM", "url": "https://www.youtube.com/watch?v=lAW4rqfttZM"}];
+const $ = s => document.querySelector(s);
+const state = { current: -1, category: "All", query: "" };
+
+const ICON = {
+  play: '<svg width="16" height="16" viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><path d="M8 5v14l11-7z"/></svg>'
+};
+const esc = s => String(s).replace(/[&<>"']/g, c => ({"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;","'":"&#39;"}[c]));
+
+const categories = [...new Set(SONGS.map(s => s.cat))];
+function visible(){
+  const q = state.query.trim().toLowerCase();
+  return SONGS.map((s, i) => ({ ...s, i })).filter(s =>
+    (state.category === "All" || s.cat === state.category) &&
+    (!q || (s.title + " " + s.cat).toLowerCase().includes(q)));
+}
+
+function renderChips(){
+  if (categories.length < 2){ $("#chips").hidden = true; return; }
+  const items = [["All", "All songs"], ...categories.map(c => [c, c])];
+  $("#chips").innerHTML = items.map(([k, label]) => {
+    const pressed = state.category === k;
+    return `<button class="chip" type="button" data-k="${esc(k)}" aria-pressed="${pressed}">${esc(label)}</button>`;
+  }).join("");
+}
+
+function renderList(){
+  const rows = visible();
+  const groups = {};
+  rows.forEach(r => (groups[r.cat] ||= []).push(r));
+  const html = Object.keys(groups).map(cat => `
+    <div class="group">
+      <h3>${esc(cat)}<span>${groups[cat].length} songs</span></h3>
+      <ul class="songs">
+        ${groups[cat].map(r => `
+          <li class="song${r.i === state.current ? " playing" : ""}" data-i="${r.i}">
+            <button class="play" type="button" data-play="${r.i}">
+              <span class="disc">${ICON.play}</span>
+              <span><b>${esc(r.title)}</b></span>
+            </button>
+          </li>`).join("")}
+      </ul>
+    </div>`).join("");
+  $("#groups").innerHTML = html || '<p class="none">No songs match. Clear the search to see all songs.</p>';
+}
+
+function play(i){
+  const s = SONGS[i];
+  state.current = i;
+  const origin = location.protocol.startsWith("http") ? "&origin=" + encodeURIComponent(location.origin) : "";
+  $("#frame").innerHTML = `<iframe src="https://www.youtube.com/embed/${s.vid}?autoplay=1&rel=0&playsinline=1${origin}"
+    title="${esc(s.title)}" allow="autoplay; encrypted-media; picture-in-picture; fullscreen"
+    allowfullscreen referrerpolicy="strict-origin-when-cross-origin"></iframe>`;
+  $("#nowTitle").textContent = s.title;
+  $("#nowMeta").textContent = s.cat;
+  $("#now").hidden = false; $("#controls").hidden = false; $("#controlsEmpty").hidden = true;
+  $("#btnYt").href = s.url;
+  document.querySelectorAll(".song").forEach(li => li.classList.toggle("playing", +li.dataset.i === i));
+  if (window.matchMedia("(max-width:960px)").matches) window.scrollTo({ top: 0, behavior: "smooth" });
+}
+
+function step(dir){
+  const list = visible().map(r => r.i);
+  if (!list.length) return;
+  const at = list.indexOf(state.current);
+  const next = at < 0 ? (dir > 0 ? 0 : list.length - 1) : (at + dir + list.length) % list.length;
+  play(list[next]);
+  document.querySelector(`.song[data-i="${list[next]}"]`)?.scrollIntoView({ block: "nearest", behavior: "smooth" });
+}
+
+function setTheater(on){
+  document.body.classList.toggle("theater", on);
+  ["#btnTheater", "#btnTheater0"].forEach(id => {
+    const b = $(id); b.setAttribute("aria-pressed", on); b.textContent = on ? "Exit theater mode" : "Theater mode";
+  });
+  $("#frame").scrollIntoView({ block: "nearest" });
+}
+
+$("#groups").addEventListener("click", e => {
+  const p = e.target.closest("[data-play]"); if (p) play(+p.dataset.play);
+});
+$("#chips").addEventListener("click", e => {
+  const c = e.target.closest("[data-k]"); if (!c) return;
+  state.category = c.dataset.k;
+  renderChips(); renderList();
+});
+$("#search").addEventListener("input", e => { state.query = e.target.value; renderList(); });
+$("#btnPrev").onclick = () => step(-1);
+$("#btnNext").onclick = () => step(1);
+$("#btnTheater").onclick = $("#btnTheater0").onclick = () => setTheater(!document.body.classList.contains("theater"));
+document.addEventListener("keydown", e => {
+  if (e.target.matches("input, textarea") || e.ctrlKey || e.metaKey || e.altKey) return;
+  if (e.key === "t" || e.key === "T") setTheater(!document.body.classList.contains("theater"));
+  if (e.key === "Escape" && document.body.classList.contains("theater")) setTheater(false);
+});
+
+renderChips(); renderList();
+</script>
+</body>
+</html>

@@ -3,7 +3,7 @@
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
-<title>Family Karaoke Song Picker</title>
+<title>Family Karaoke Song Preview</title>
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Bricolage+Grotesque:opsz,wght@12..96,600;12..96,800&family=Figtree:wght@400;500;600&display=swap" rel="stylesheet">
@@ -69,7 +69,7 @@ body.theater .stage .btn[aria-pressed="true"]{background:#2E3A85;border-color:#8
 .group h3{margin:20px 0 8px;padding:8px 0;background:var(--bg);font:800 1.05rem/1.2 var(--display);display:flex;justify-content:space-between;gap:12px;border-bottom:1px solid var(--line)}
 .group h3 span{font:500 .85rem var(--body);color:var(--muted)}
 .songs{list-style:none;margin:0;padding:0;display:grid;gap:6px}
-.song{display:grid;grid-template-columns:minmax(0,1fr) auto;align-items:stretch;border:1px solid var(--line);border-radius:12px;background:var(--card);overflow:hidden}
+.song{display:grid;grid-template-columns:minmax(0,1fr);align-items:stretch;border:1px solid var(--line);border-radius:12px;background:var(--card);overflow:hidden}
 .song.playing{border-color:var(--focus);background:var(--active)}
 .play{display:grid;grid-template-columns:36px minmax(0,1fr);gap:12px;align-items:center;padding:10px 12px;border:0;background:none;text-align:left}
 .play:hover .disc{background:var(--ink);color:var(--bg)}
@@ -77,33 +77,7 @@ body.theater .stage .btn[aria-pressed="true"]{background:#2E3A85;border-color:#8
 .song.playing .disc{background:var(--focus);color:#fff}
 .play b{display:block;font-weight:600;line-height:1.3}
 .play small{display:block;color:var(--muted);line-height:1.35;margin-top:2px}
-.vote{width:96px;border:0;border-left:1px solid var(--line);background:none;font-weight:600;font-size:.9rem;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:2px}
-.vote:hover{background:var(--active)}
-.vote[aria-pressed="true"]{background:var(--accent);color:var(--accent-ink)}
-.vote svg{width:20px;height:20px}
 .none{padding:32px 0;color:var(--muted)}
-
-dialog{margin:0 0 0 auto;height:100vh;max-height:100vh;width:min(460px,100vw);border:0;padding:0;background:var(--card);color:var(--ink);box-shadow:-12px 0 40px rgba(10,15,45,.3)}
-dialog::backdrop{background:rgba(10,15,45,.55)}
-.sheet{display:flex;flex-direction:column;height:100%}
-.sheet header{display:flex;justify-content:space-between;align-items:center;gap:12px;padding:16px 20px;border-bottom:1px solid var(--line)}
-.sheet h2{margin:0;font:800 1.2rem var(--display)}
-.sheet ol{list-style:none;margin:0;padding:12px 20px;overflow:auto;flex:1;display:grid;gap:8px;align-content:start}
-.pick{display:grid;grid-template-columns:32px minmax(0,1fr) auto;gap:10px;align-items:center;padding:8px 10px;border:1px solid var(--line);border-radius:10px}
-.pick .rank{font:800 1.1rem var(--display);text-align:center}
-.pick b{font-weight:600;font-size:.95rem;line-height:1.3;display:block}
-.pick small{color:var(--muted)}
-.mini{display:flex;gap:4px}
-.mini button{width:32px;height:32px;border:1px solid var(--line);border-radius:8px;background:none;display:grid;place-items:center}
-.mini button:hover:not([disabled]){background:var(--active)}
-.mini button[disabled]{opacity:.35;cursor:not-allowed}
-.sheet footer{display:flex;flex-wrap:wrap;gap:8px;padding:16px 20px;border-top:1px solid var(--line)}
-.sheet footer .btn{flex:1 1 auto;justify-content:center}
-.hint{margin:0;padding:12px 20px 0;color:var(--muted);font-size:.9rem}
-.confirm{display:flex;flex-wrap:wrap;gap:8px;align-items:center;width:100%}
-
-.toast{position:fixed;left:50%;bottom:24px;transform:translate(-50%,20px);opacity:0;pointer-events:none;background:var(--ink);color:var(--bg);padding:12px 18px;border-radius:10px;font-weight:500;z-index:50;transition:opacity .2s,transform .2s;max-width:calc(100vw - 32px)}
-.toast.show{opacity:1;transform:translate(-50%,0)}
 
 @media (max-width:960px){
   .layout{grid-template-columns:minmax(0,1fr);padding:16px;gap:16px}
@@ -121,13 +95,7 @@ dialog::backdrop{background:rgba(10,15,45,.55)}
 <body>
 
 <header class="topbar">
-  <h1>Family Karaoke Song Picker</h1>
-  <div class="topbar-actions">
-    <button class="btn" id="btnPicks" type="button">
-      <span class="label">My top 20</span><span class="count" id="count">0 / 20</span>
-    </button>
-    <button class="btn primary" id="btnCsvTop" type="button" disabled>Download CSV</button>
-  </div>
+  <h1>Family Karaoke Song Preview</h1>
 </header>
 
 <main class="layout">
@@ -143,7 +111,6 @@ dialog::backdrop{background:rgba(10,15,45,.55)}
       <button class="btn" id="btnPrev" type="button">Previous</button>
       <button class="btn" id="btnNext" type="button">Next</button>
       <button class="btn" id="btnTheater" type="button" aria-pressed="false" title="Toggle theater mode (T)">Theater mode</button>
-      <button class="btn primary" id="btnVoteNow" type="button" aria-pressed="false">Add to my top 20</button>
       <a class="btn hide-sm" id="btnYt" href="#" target="_blank" rel="noopener">Open on YouTube</a>
     </div>
     <div class="controls" id="controlsEmpty">
@@ -153,73 +120,37 @@ dialog::backdrop{background:rgba(10,15,45,.55)}
 
   <section class="list" aria-label="Song list">
     <div class="tools">
-      <input class="search" id="search" type="search" placeholder="Search by title or style" aria-label="Search songs">
+      <input class="search" id="search" type="search" placeholder="Search by song title" aria-label="Search songs">
     </div>
     <div class="chips" id="chips" role="group" aria-label="Filter by group"></div>
     <div id="groups"></div>
   </section>
 </main>
 
-<dialog id="picks" aria-labelledby="picksTitle">
-  <div class="sheet">
-    <header>
-      <h2 id="picksTitle">My top 20</h2>
-      <button class="btn" id="btnClose" type="button">Close</button>
-    </header>
-    <p class="hint" id="picksHint"></p>
-    <ol id="picksList"></ol>
-    <footer>
-      <button class="btn primary" id="btnCsv" type="button" disabled>Download CSV</button>
-      <button class="btn" id="btnClear" type="button" disabled>Clear all</button>
-    </footer>
-  </div>
-</dialog>
-
-<div class="toast" id="toast" role="status" aria-live="polite"></div>
 
 <script>
-const SONGS = [{"cat": "Kelompok 1", "title": "KJ 318 Berbahagia Tiap Rumah Tangga", "note": "Himne", "vid": "0Z0MxCyZiXk", "url": "https://www.youtube.com/watch?v=0Z0MxCyZiXk"}, {"cat": "Kelompok 1", "title": "Bapa Engkau Sungguh Baik", "note": "Worship pelan", "vid": "6pMezycSskw", "url": "https://www.youtube.com/watch?v=6pMezycSskw"}, {"cat": "Kelompok 1", "title": "Tak Ku Tahu Kan Hari Esok", "note": "Pop praise upbeat", "vid": "p-VpNO4dTK0", "url": "https://www.youtube.com/watch?v=p-VpNO4dTK0"}, {"cat": "Kelompok 1", "title": "Waktu Tuhan", "note": "Pop ballad", "vid": "eHK_cheOI0s", "url": "https://www.youtube.com/watch?v=eHK_cheOI0s"}, {"cat": "Kelompok 1", "title": "Keluargaku adalah surgaku", "note": "Akustik/folk keluarga", "vid": "z80nEjn8dXg", "url": "https://www.youtube.com/watch?v=z80nEjn8dXg"}, {"cat": "Kelompok 1", "title": "Besar Setia-Mu", "note": "Worship mid-tempo", "vid": "xLq5qo2icEk", "url": "https://www.youtube.com/watch?v=xLq5qo2icEk"}, {"cat": "Kelompok 1", "title": "Kunyanyi Haleluya", "note": "Praise upbeat", "vid": "GyaR_6Ukti8", "url": "https://www.youtube.com/watch?v=GyaR_6Ukti8"}, {"cat": "Kelompok 1", "title": "Elshaddai", "note": "Worship pelan", "vid": "lAW4rqfttZM", "url": "https://www.youtube.com/watch?v=lAW4rqfttZM"}, {"cat": "Kelompok 2", "title": "PKJ 288 Inilah Rumah Kami", "note": "Himne/PKJ", "vid": "ZcYZJQABU2Y", "url": "https://www.youtube.com/watch?v=ZcYZJQABU2Y"}, {"cat": "Kelompok 2", "title": "Kasih Setia-Mu", "note": "Worship pelan", "vid": "xMqRqlIr97I", "url": "https://www.youtube.com/watch?v=xMqRqlIr97I"}, {"cat": "Kelompok 2", "title": "S'bab Kau Besar", "note": "Pop praise upbeat", "vid": "-MBgVYaC_DQ", "url": "https://www.youtube.com/watch?v=-MBgVYaC_DQ"}, {"cat": "Kelompok 2", "title": "Satu-Satunya Yang Kuandalkan", "note": "Pop worship mid-tempo", "vid": "6pUy_0fRkAo", "url": "https://www.youtube.com/watch?v=6pUy_0fRkAo"}, {"cat": "Kelompok 2", "title": "Dalam Yesus Kita Bersaudara", "note": "Folk/akustik", "vid": "og8jdrhEelA", "url": "https://www.youtube.com/watch?v=og8jdrhEelA"}, {"cat": "Kelompok 2", "title": "Indah Rencanamu Tuhan", "note": "Pop rohani mid-tempo", "vid": "0RcxDchoyi8", "url": "https://www.youtube.com/watch?v=0RcxDchoyi8"}, {"cat": "Kelompok 2", "title": "Mujizat Itu Nyata", "note": "Gospel upbeat", "vid": "f5rO96r9aHE", "url": "https://www.youtube.com/watch?v=f5rO96r9aHE"}, {"cat": "Kelompok 2", "title": "Bersama-Mu", "note": "Ballad pelan", "vid": "4fSBa62gB3c", "url": "https://www.youtube.com/watch?v=4fSBa62gB3c"}, {"cat": "Kelompok 3", "title": "PKJ 289 Keluarga Hidup Indah", "note": "Himne/PKJ", "vid": "PmXhcO7trCU", "url": "https://www.youtube.com/watch?v=PmXhcO7trCU"}, {"cat": "Kelompok 3", "title": "Sentuh Hatiku", "note": "Worship pelan", "vid": "n1FodR8umhY", "url": "https://www.youtube.com/watch?v=n1FodR8umhY"}, {"cat": "Kelompok 3", "title": "Bagi Tuhan Tak Ada Yang Mustahil", "note": "Gospel upbeat", "vid": "slPzE6IhE4Y", "url": "https://www.youtube.com/watch?v=slPzE6IhE4Y"}, {"cat": "Kelompok 3", "title": "Allah Peduli", "note": "Pop worship mid-tempo", "vid": "tYQsV_QZKzA", "url": "https://www.youtube.com/watch?v=tYQsV_QZKzA"}, {"cat": "Kelompok 3", "title": "Keluarga Allah", "note": "Folk/akustik keluarga", "vid": "jS-pgNj5aqc", "url": "https://www.youtube.com/watch?v=jS-pgNj5aqc"}, {"cat": "Kelompok 3", "title": "Ku Hidup Bagi-Mu", "note": "Worship mid-tempo", "vid": "-A705o1DFJc", "url": "https://www.youtube.com/watch?v=-A705o1DFJc"}, {"cat": "Kelompok 3", "title": "Aku dan Seisi Rumahku", "note": "Akustik/pop keluarga", "vid": "9zMx31FKoNw", "url": "https://www.youtube.com/watch?v=9zMx31FKoNw"}, {"cat": "Kelompok 3", "title": "Hanya Dekat Allah Saja", "note": "Worship pelan", "vid": "5barJ6SUDg4", "url": "https://www.youtube.com/watch?v=5barJ6SUDg4"}, {"cat": "Kelompok 4", "title": "KJ 451 Bila Yesus Bersama Keluarga", "note": "Himne", "vid": "LXfxwUyekZA", "url": "https://www.youtube.com/watch?v=LXfxwUyekZA"}, {"cat": "Kelompok 4", "title": "Ku Berbahagia", "note": "Pop upbeat", "vid": "pyfCxSZ6ZFY", "url": "https://www.youtube.com/watch?v=pyfCxSZ6ZFY"}, {"cat": "Kelompok 4", "title": "Janji-Mu Seperti Fajar", "note": "Worship pelan", "vid": "V1cPYKBVth8", "url": "https://www.youtube.com/watch?v=V1cPYKBVth8"}, {"cat": "Kelompok 4", "title": "Hidup ini adalah kesempatan", "note": "Folk/akustik", "vid": "ZgNQS_ebdgg", "url": "https://www.youtube.com/watch?v=ZgNQS_ebdgg"}, {"cat": "Kelompok 4", "title": "Kalau Ku Cari Damai", "note": "Pop ballad", "vid": "m8OYlO1bhQI", "url": "https://www.youtube.com/watch?v=m8OYlO1bhQI"}, {"cat": "Kelompok 4", "title": "Tuhan Yesus Baik", "note": "Pop upbeat", "vid": "hg4G4km-D4Q", "url": "https://www.youtube.com/watch?v=hg4G4km-D4Q"}, {"cat": "Kelompok 4", "title": "Berkat Bagi Keluargaku", "note": "Akustik/pop keluarga", "vid": "q69FdKG7ec0", "url": "https://www.youtube.com/watch?v=q69FdKG7ec0"}, {"cat": "Kelompok 4", "title": "Engkau Alasan Ku Hidup", "note": "Worship pelan", "vid": "437LlQAM4uA", "url": "https://www.youtube.com/watch?v=437LlQAM4uA"}];
-const MAX = 20;
-const STORE = "karaoke-picks-v2";
-
+const SONGS = [{"cat": "Kelompok 1", "title": "KJ 318 Berbahagia Tiap Rumah Tangga", "note": "", "vid": "EWav5xs7A3M", "url": "https://www.youtube.com/watch?v=EWav5xs7A3M"}, {"cat": "Kelompok 1", "title": "Tak Ku Tahu Kan Hari Esok", "note": "", "vid": "0Lz5cASZ0C0", "url": "https://www.youtube.com/watch?v=0Lz5cASZ0C0"}, {"cat": "Kelompok 1", "title": "Waktu Tuhan", "note": "", "vid": "eHK_cheOI0s", "url": "https://www.youtube.com/watch?v=eHK_cheOI0s"}, {"cat": "Kelompok 1", "title": "Keluargaku adalah surgaku", "note": "", "vid": "z80nEjn8dXg", "url": "https://www.youtube.com/watch?v=z80nEjn8dXg"}, {"cat": "Kelompok 1", "title": "Elshaddai", "note": "", "vid": "lAW4rqfttZM", "url": "https://www.youtube.com/watch?v=lAW4rqfttZM"}, {"cat": "Kelompok 2", "title": "PKJ 288 Inilah Rumah Kami", "note": "", "vid": "xZtbj7DY3uM", "url": "https://www.youtube.com/watch?v=xZtbj7DY3uM"}, {"cat": "Kelompok 2", "title": "S'bab Kau Besar", "note": "", "vid": "-MBgVYaC_DQ", "url": "https://www.youtube.com/watch?v=-MBgVYaC_DQ"}, {"cat": "Kelompok 2", "title": "Indah Rencanamu Tuhan", "note": "", "vid": "0RcxDchoyi8", "url": "https://www.youtube.com/watch?v=0RcxDchoyi8"}, {"cat": "Kelompok 2", "title": "Mujizat Itu Nyata", "note": "", "vid": "f5rO96r9aHE", "url": "https://www.youtube.com/watch?v=f5rO96r9aHE"}, {"cat": "Kelompok 2", "title": "Bersama-Mu", "note": "", "vid": "4fSBa62gB3c", "url": "https://www.youtube.com/watch?v=4fSBa62gB3c"}, {"cat": "Kelompok 3", "title": "PKJ 289 Keluarga Hidup Indah", "note": "", "vid": "PmXhcO7trCU", "url": "https://www.youtube.com/watch?v=PmXhcO7trCU"}, {"cat": "Kelompok 3", "title": "Bagi Tuhan Tak Ada Yang Mustahil", "note": "", "vid": "slPzE6IhE4Y", "url": "https://www.youtube.com/watch?v=slPzE6IhE4Y"}, {"cat": "Kelompok 3", "title": "Keluarga Allah", "note": "", "vid": "jS-pgNj5aqc", "url": "https://www.youtube.com/watch?v=jS-pgNj5aqc"}, {"cat": "Kelompok 3", "title": "Ku Hidup Bagi-Mu", "note": "", "vid": "-A705o1DFJc", "url": "https://www.youtube.com/watch?v=-A705o1DFJc"}, {"cat": "Kelompok 3", "title": "Aku dan Seisi Rumahku", "note": "", "vid": "9zMx31FKoNw", "url": "https://www.youtube.com/watch?v=9zMx31FKoNw"}, {"cat": "Kelompok 4", "title": "KJ 451 Bila Yesus Bersama Keluarga", "note": "", "vid": "HiUVYsqtX5I", "url": "https://www.youtube.com/watch?v=HiUVYsqtX5I"}, {"cat": "Kelompok 4", "title": "Janji-Mu Seperti Fajar", "note": "", "vid": "V1cPYKBVth8", "url": "https://www.youtube.com/watch?v=V1cPYKBVth8"}, {"cat": "Kelompok 4", "title": "Hidup ini adalah kesempatan", "note": "", "vid": "ZgNQS_ebdgg", "url": "https://www.youtube.com/watch?v=ZgNQS_ebdgg"}, {"cat": "Kelompok 4", "title": "Kalau Ku Cari Damai", "note": "", "vid": "m8OYlO1bhQI", "url": "https://www.youtube.com/watch?v=m8OYlO1bhQI"}, {"cat": "Kelompok 4", "title": "Berkat Bagi Keluargaku", "note": "", "vid": "q69FdKG7ec0", "url": "https://www.youtube.com/watch?v=q69FdKG7ec0"}];
 const $ = s => document.querySelector(s);
-const state = { current: -1, category: "All", query: "", picks: [], picksOnly: false };
-
-try {
-  const saved = JSON.parse(localStorage.getItem(STORE) || "[]");
-  state.picks = saved.filter(i => Number.isInteger(i) && SONGS[i]).slice(0, MAX);
-} catch (e) {}
-const persist = () => { try { localStorage.setItem(STORE, JSON.stringify(state.picks)); } catch (e) {} };
+const state = { current: -1, category: "All", query: "" };
 
 const ICON = {
-  play: '<svg width="16" height="16" viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><path d="M8 5v14l11-7z"/></svg>',
-  star: '<svg viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><path d="M12 2.5l2.9 6.1 6.6.8-4.9 4.6 1.3 6.6L12 17.3 6.1 20.6l1.3-6.6L2.5 9.4l6.6-.8z"/></svg>',
-  starO: '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linejoin="round" aria-hidden="true"><path d="M12 2.5l2.9 6.1 6.6.8-4.9 4.6 1.3 6.6L12 17.3 6.1 20.6l1.3-6.6L2.5 9.4l6.6-.8z"/></svg>',
-  up: '<svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" aria-hidden="true"><path d="M6 15l6-6 6 6"/></svg>',
-  down: '<svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" aria-hidden="true"><path d="M6 9l6 6 6-6"/></svg>',
-  x: '<svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" aria-hidden="true"><path d="M6 6l12 12M18 6L6 18"/></svg>'
+  play: '<svg width="16" height="16" viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><path d="M8 5v14l11-7z"/></svg>'
 };
 const esc = s => String(s).replace(/[&<>"']/g, c => ({"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;","'":"&#39;"}[c]));
-
-let toastTimer;
-function toast(msg){
-  const t = $("#toast"); t.textContent = msg; t.classList.add("show");
-  clearTimeout(toastTimer); toastTimer = setTimeout(() => t.classList.remove("show"), 2800);
-}
 
 const categories = [...new Set(SONGS.map(s => s.cat))];
 function visible(){
   const q = state.query.trim().toLowerCase();
   return SONGS.map((s, i) => ({ ...s, i })).filter(s =>
     (state.category === "All" || s.cat === state.category) &&
-    (!state.picksOnly || state.picks.includes(s.i)) &&
-    (!q || (s.title + " " + s.note + " " + s.cat).toLowerCase().includes(q)));
+    (!q || (s.title + " " + s.cat).toLowerCase().includes(q)));
 }
 
 function renderChips(){
-  const items = [["All", "All songs"], ...categories.map(c => [c, c]), ["__picks", "My picks"]];
+  if (categories.length < 2){ $("#chips").hidden = true; return; }
+  const items = [["All", "All songs"], ...categories.map(c => [c, c])];
   $("#chips").innerHTML = items.map(([k, label]) => {
-    const pressed = k === "__picks" ? state.picksOnly : (!state.picksOnly && state.category === k);
+    const pressed = state.category === k;
     return `<button class="chip" type="button" data-k="${esc(k)}" aria-pressed="${pressed}">${esc(label)}</button>`;
   }).join("");
 }
@@ -236,61 +167,12 @@ function renderList(){
           <li class="song${r.i === state.current ? " playing" : ""}" data-i="${r.i}">
             <button class="play" type="button" data-play="${r.i}">
               <span class="disc">${ICON.play}</span>
-              <span><b>${esc(r.title)}</b><small>${esc(r.note)}</small></span>
+              <span><b>${esc(r.title)}</b></span>
             </button>
-            <button class="vote" type="button" data-vote="${r.i}" aria-pressed="false"></button>
           </li>`).join("")}
       </ul>
     </div>`).join("");
-  $("#groups").innerHTML = html || '<p class="none">No songs match. Clear the search or choose another group.</p>';
-  syncVotes();
-}
-
-function syncVotes(){
-  document.querySelectorAll("[data-vote]").forEach(b => {
-    const i = +b.dataset.vote, on = state.picks.includes(i);
-    b.setAttribute("aria-pressed", on);
-    b.setAttribute("aria-label", (on ? "Remove from my top 20: " : "Add to my top 20: ") + SONGS[i].title);
-    b.innerHTML = (on ? ICON.star : ICON.starO) + `<span>${on ? "Voted #" + (state.picks.indexOf(i) + 1) : "Vote"}</span>`;
-  });
-  const n = state.picks.length;
-  $("#count").textContent = n + " / " + MAX;
-  $("#btnCsvTop").disabled = $("#btnCsv").disabled = $("#btnClear").disabled = n === 0;
-  const vn = $("#btnVoteNow");
-  if (state.current >= 0){
-    const on = state.picks.includes(state.current);
-    vn.setAttribute("aria-pressed", on);
-    vn.textContent = on ? "Remove from my top 20" : "Add to my top 20";
-  }
-  renderPicks();
-}
-
-function toggleVote(i){
-  const at = state.picks.indexOf(i);
-  if (at >= 0) state.picks.splice(at, 1);
-  else {
-    if (state.picks.length >= MAX){ toast("You already have " + MAX + " songs. Remove one to add another."); return; }
-    state.picks.push(i);
-    if (state.picks.length === MAX) toast("That's your 20. Open My top 20 to reorder or download.");
-  }
-  persist();
-  if (state.picksOnly) renderList(); else syncVotes();
-}
-
-function renderPicks(){
-  $("#picksHint").textContent = state.picks.length
-    ? "Order matters: #1 is your favourite. Use the arrows to reorder."
-    : "No songs yet. Press Vote on a song to add it here.";
-  $("#picksList").innerHTML = state.picks.map((i, k) => `
-    <li class="pick">
-      <span class="rank">${k + 1}</span>
-      <span><b>${esc(SONGS[i].title)}</b><small>${esc(SONGS[i].cat)}</small></span>
-      <span class="mini">
-        <button type="button" data-up="${k}" aria-label="Move up" ${k === 0 ? "disabled" : ""}>${ICON.up}</button>
-        <button type="button" data-down="${k}" aria-label="Move down" ${k === state.picks.length - 1 ? "disabled" : ""}>${ICON.down}</button>
-        <button type="button" data-del="${k}" aria-label="Remove">${ICON.x}</button>
-      </span>
-    </li>`).join("");
+  $("#groups").innerHTML = html || '<p class="none">No songs match. Clear the search to see all songs.</p>';
 }
 
 function play(i){
@@ -301,11 +183,10 @@ function play(i){
     title="${esc(s.title)}" allow="autoplay; encrypted-media; picture-in-picture; fullscreen"
     allowfullscreen referrerpolicy="strict-origin-when-cross-origin"></iframe>`;
   $("#nowTitle").textContent = s.title;
-  $("#nowMeta").textContent = s.cat + " • " + s.note;
+  $("#nowMeta").textContent = s.cat;
   $("#now").hidden = false; $("#controls").hidden = false; $("#controlsEmpty").hidden = true;
   $("#btnYt").href = s.url;
   document.querySelectorAll(".song").forEach(li => li.classList.toggle("playing", +li.dataset.i === i));
-  syncVotes();
   if (window.matchMedia("(max-width:960px)").matches) window.scrollTo({ top: 0, behavior: "smooth" });
 }
 
@@ -326,67 +207,22 @@ function setTheater(on){
   $("#frame").scrollIntoView({ block: "nearest" });
 }
 
-function downloadCsv(){
-  if (!state.picks.length) return;
-  const q = v => '"' + String(v).replace(/"/g, '""') + '"';
-  const head = ["Rank", "Group", "Title", "Style", "YouTube link"];
-  const rows = state.picks.map((i, k) => [k + 1, SONGS[i].cat, SONGS[i].title, SONGS[i].note, SONGS[i].url]);
-  const csv = [head, ...rows].map(r => r.map(q).join(",")).join("\r\n");
-  const blob = new Blob(["﻿" + csv], { type: "text/csv;charset=utf-8" });
-  const a = document.createElement("a");
-  a.href = URL.createObjectURL(blob);
-  a.download = "karaoke-top-" + state.picks.length + ".csv";
-  document.body.appendChild(a); a.click(); a.remove();
-  setTimeout(() => URL.revokeObjectURL(a.href), 1000);
-  toast("Downloaded " + a.download);
-}
-
 $("#groups").addEventListener("click", e => {
-  const p = e.target.closest("[data-play]"); if (p) return play(+p.dataset.play);
-  const v = e.target.closest("[data-vote]"); if (v) toggleVote(+v.dataset.vote);
+  const p = e.target.closest("[data-play]"); if (p) play(+p.dataset.play);
 });
 $("#chips").addEventListener("click", e => {
   const c = e.target.closest("[data-k]"); if (!c) return;
-  if (c.dataset.k === "__picks") state.picksOnly = !state.picksOnly;
-  else { state.category = c.dataset.k; state.picksOnly = false; }
+  state.category = c.dataset.k;
   renderChips(); renderList();
 });
 $("#search").addEventListener("input", e => { state.query = e.target.value; renderList(); });
 $("#btnPrev").onclick = () => step(-1);
 $("#btnNext").onclick = () => step(1);
 $("#btnTheater").onclick = $("#btnTheater0").onclick = () => setTheater(!document.body.classList.contains("theater"));
-$("#btnVoteNow").onclick = () => state.current >= 0 && toggleVote(state.current);
-$("#btnPicks").onclick = () => $("#picks").showModal();
-$("#btnClose").onclick = () => $("#picks").close();
-$("#picks").addEventListener("click", e => { if (e.target.id === "picks") e.target.close(); });
-$("#btnCsv").onclick = $("#btnCsvTop").onclick = downloadCsv;
-
-/* Clear all: two-step inline confirmation (no browser dialogs) */
-const footerHtml = '<button class="btn primary" id="btnCsv" type="button">Download CSV</button><button class="btn" id="btnClear" type="button">Clear all</button>';
-function bindFooter(){ $("#btnCsv").onclick = downloadCsv; $("#btnClear").onclick = askClear; syncVotes(); }
-function askClear(){
-  const f = $("#picks footer");
-  f.innerHTML = `<div class="confirm"><span>Remove all ${state.picks.length} picks?</span>
-    <button class="btn primary" id="yesClear" type="button">Remove all</button>
-    <button class="btn" id="noClear" type="button">Keep</button></div>`;
-  $("#noClear").onclick = () => { f.innerHTML = footerHtml; bindFooter(); };
-  $("#yesClear").onclick = () => { state.picks = []; persist(); f.innerHTML = footerHtml; bindFooter(); if (state.picksOnly) renderList(); };
-}
-$("#btnClear").onclick = askClear;
-
-$("#picksList").addEventListener("click", e => {
-  const b = e.target.closest("button"); if (!b) return;
-  const d = b.dataset, P = state.picks;
-  if (d.up !== undefined){ const k = +d.up; [P[k-1], P[k]] = [P[k], P[k-1]]; }
-  else if (d.down !== undefined){ const k = +d.down; [P[k+1], P[k]] = [P[k], P[k+1]]; }
-  else if (d.del !== undefined){ P.splice(+d.del, 1); }
-  else return;
-  persist(); if (state.picksOnly) renderList(); else syncVotes();
-});
 document.addEventListener("keydown", e => {
   if (e.target.matches("input, textarea") || e.ctrlKey || e.metaKey || e.altKey) return;
   if (e.key === "t" || e.key === "T") setTheater(!document.body.classList.contains("theater"));
-  if (e.key === "Escape" && document.body.classList.contains("theater") && !$("#picks").open) setTheater(false);
+  if (e.key === "Escape" && document.body.classList.contains("theater")) setTheater(false);
 });
 
 renderChips(); renderList();
