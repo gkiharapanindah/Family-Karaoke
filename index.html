@@ -66,6 +66,16 @@
   .agree { display: flex; gap: 10px; align-items: flex-start; font-weight: 400; font-size: 14px;
            background: var(--bg); padding: 12px; border-radius: 10px; cursor: pointer; }
   .agree input { width: 20px; height: 20px; flex: none; margin: 1px 0 0; accent-color: var(--accent); }
+  /* Desktop: dua kolom — info & ketentuan di kiri, form di kanan */
+  @media (min-width: 900px) {
+    body { padding: 48px 32px; }
+    .wrap { max-width: 1080px; }
+    h1 { font-size: 38px; }
+    .card { display: grid; grid-template-columns: 1.1fr 1fr; gap: 36px; padding: 32px; align-items: start; }
+    #info { grid-column: 1; grid-row: 1; }
+    #info details.rules { margin-bottom: 0; }
+    #form, #result, #closed { grid-column: 2; grid-row: 1; position: sticky; top: 24px; }
+  }
   [hidden] { display: none !important; }
 </style>
 </head>
@@ -134,7 +144,7 @@
       <div class="field">
         <label class="agree" for="setuju">
           <input type="checkbox" id="setuju" name="setuju" required>
-          <span>Saya telah membaca dan menyetujui <b>Ketentuan Family Karaoke</b> di atas, serta bersedia mengikuti arahan panitia selama kegiatan berlangsung.</span>
+          <span>Saya telah membaca dan menyetujui <b>Ketentuan Family Karaoke</b>, serta bersedia mengikuti arahan panitia selama kegiatan berlangsung.</span>
         </label>
       </div>
 
@@ -166,7 +176,7 @@
 
 <script>
   // ===== GANTI dengan URL Web App dari Google Apps Script (akhiran /exec) =====
-  const SCRIPT_URL = 'https://script.google.com/macros/s/AKfycbwFRQgY_twLW69RTC14lGBnEY5LlXPyNdhRrYN7XxRMXeLCQTddR85cjx1_zd2LX9r7iw/exec';
+  const SCRIPT_URL = 'PASTE_URL_WEB_APP_DI_SINI';
 
   const MIN = 2, MAX = 4;
   const BATAS_DAFTAR = new Date('2026-10-21T23:59:59+07:00');
